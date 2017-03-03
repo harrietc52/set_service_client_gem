@@ -26,6 +26,8 @@ module SetServiceClient
 	def self.add_materials(set_uuid, materials)
 		data = {:data => materials.compact.map{|m| {:id => m.uuid, :type => 'materials'}}}
 		conn = get_connection
+		puts "data!!"
+		p data.to_json
 		conn.post('/api/v1/sets/'+set_uuid+'/relationships/materials', data.to_json)
 	end
 
