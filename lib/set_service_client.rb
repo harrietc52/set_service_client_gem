@@ -27,7 +27,7 @@ module SetServiceClient
 		data = {:data => materials.compact.map{|m| {:id => m.uuid, :type => 'materials'}}}
 		conn = get_connection
 		puts "data!!"
-		p data.to_json
+		p data
 		conn.post('/api/v1/sets/'+set_uuid+'/relationships/materials', data.to_json)
 	end
 
@@ -52,9 +52,9 @@ module SetServiceClient
 private
 
 	def self.get_connection
-		conn = Faraday.new(:url => Rails.application.config.set_url) do |faraday|
+		conn = Faraday.new(:url => 'http://localhost:3000/api/v1/sets') do |faraday|
 			faraday.use ZipkinTracer::FaradayHandler, 'Set Service'
-			faraday.proxy Rails.application.config.set_url_default_proxy
+			faraday.proxy 'http://localhost:3000'
 			faraday.request  :url_encoded
 			faraday.response :logger
 			faraday.adapter  Faraday.default_adapter
